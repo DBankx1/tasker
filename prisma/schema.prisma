@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  email          String?  @unique
+  phone          String?  @unique
+  avatar         String?
+  onboarded      Boolean  @default(false)
+  verified_email Boolean  @default(false)
+  verified_phone Boolean  @default(false)
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now())
+  bids           Bid[]
+  tasks          Task[]
+
+  @@index([email])
+  @@index([phone])
+  @@map("users")
+}
+
+model Tag_Type {
+  id          Int      @id @default(autoincrement())
+  description String
+  created_at  DateTime @default(now())
+  tags        Tag[]
+
+  @@index([description])
+  @@map("tag_types")
+}
+
+model Tag {
+  id              Int      @id @default(autoincrement())
+  tag_type_id     Int
+  tag_type        Tag_Type @relation(fields: [tag_type_id], references: [id])
+  created_by_user Boolean  @default(false)
+  description     String
+  upper_tag_id    Int
+  created_at      DateTime @default(now())
+  tasks           Task[]
+
+  @@index([tag_type_id])
+  @@index([description])
+  @@index([upper_tag_id])
+  @@map("tags")
+}
+
+model Bid {
+  id                        Int       @id @default(autoincrement())
+  task_id                   Int
+  task                      Task      @relation(fields: [task_id], references: [id])
+  amount                    Decimal   @db.Money
+  description               String?
+  accepted                  Boolean   @default(false)
+  user_id                   Int
+  user                      User      @relation(fields: [user_id], references: [id])
+  estimated_completion_time DateTime?
+  created_at                DateTime  @default(now())
+  updated_at                DateTime  @default(now())
+
+  @@index([task_id])
+  @@index([user_id])
+  @@index([amount])
+  @@map("bids")
+}
+
+model Task {
+  id               Int      @id @default(autoincrement())
+  user_id          Int
+  user             User     @relation(fields: [user_id], references: [id])
+  description      String
+  budget           Decimal  @db.Money
+  category_id      Int
+  location_type_id Int
+  location_value   String?
+  is_completed     Boolean  @default(false)
+  due_date         DateTime @default(now())
+  created_at       DateTime @default(now())
+  updated_at       DateTime @default(now())
+
+  bids  Bid[]
+  Tag   Tag?  @relation(fields: [tagId], references: [id])
+  tagId Int?
+
+  @@index([user_id])
+  @@index([budget])
+  @@index([category_id])
+  @@index([location_type_id])
+  @@index([due_date])
+  @@map("tasks")
+}
