@@ -15,6 +15,8 @@ model User {
   email          String?  @unique
   phone          String?  @unique
   avatar         String?
+  stytch_user_id String
+  stytch_auth_id String
   onboarded      Boolean  @default(false)
   verified_email Boolean  @default(false)
   verified_phone Boolean  @default(false)
