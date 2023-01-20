@@ -15,7 +15,7 @@ model User {
   email          String?  @unique
   phone          String?  @unique
   avatar         String?
-  stytch_user_id String
+  stytch_user_id String   @unique
   stytch_auth_id String
   onboarded      Boolean  @default(false)
   verified_email Boolean  @default(false)
@@ -45,8 +45,9 @@ model Tag {
   tag_type_id     Int
   tag_type        Tag_Type @relation(fields: [tag_type_id], references: [id])
   created_by_user Boolean  @default(false)
+  user_id         Int?
   description     String
-  upper_tag_id    Int
+  upper_tag_id    Int?
   created_at      DateTime @default(now())
   tasks           Task[]
 
@@ -76,18 +77,19 @@ model Bid {
 }
 
 model Task {
-  id               Int      @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
+  title            String
   user_id          Int
-  user             User     @relation(fields: [user_id], references: [id])
+  user             User      @relation(fields: [user_id], references: [id])
   description      String
-  budget           Decimal  @db.Money
+  budget           Decimal
   category_id      Int
   location_type_id Int
   location_value   String?
-  is_completed     Boolean  @default(false)
-  due_date         DateTime @default(now())
-  created_at       DateTime @default(now())
-  updated_at       DateTime @default(now())
+  is_completed     Boolean   @default(false)
+  due_date         DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @default(now())
 
   bids  Bid[]
   Tag   Tag?  @relation(fields: [tagId], references: [id])

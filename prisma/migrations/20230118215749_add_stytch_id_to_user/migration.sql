@@ -7,3 +7,4 @@
 -- AlterTable
 ALTER TABLE "users" ADD COLUMN     "stytch_user_id" TEXT NOT NULL;
 ALTER TABLE "users" ADD COLUMN     "stytch_auth_id" TEXT NOT NULL;
+ALTER TABLE "tasks" ADD COLUMN     "title" TEXT NOT NULL;

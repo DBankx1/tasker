@@ -1,12 +1,12 @@
 import { IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Length, MinLength } from "class-validator";
 
-export class EmailRegisterDto {
+export class EmailAuthDto {
     @IsEmail()
     @IsNotEmpty()
     email: string;
 }
 
-export class PhoneRegisterDto {
+export class PhoneAuthDto {
     @IsPhoneNumber()
     @IsNotEmpty()
     phone: string;

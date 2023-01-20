@@ -59,7 +59,7 @@ CREATE TABLE "tasks" (
     "location_type_id" INTEGER NOT NULL,
     "location_value" TEXT,
     "is_completed" BOOLEAN NOT NULL DEFAULT false,
-    "due_date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "due_date" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "tagId" INTEGER,
